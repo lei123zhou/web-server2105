@@ -1,5 +1,6 @@
 package com.webserver.core;
 
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.Socket;
@@ -22,10 +23,21 @@ public class ClientHandler implements Runnable{
         try{
             //1解析请求
             InputStream in = socket.getInputStream();
+            StringBuilder builder = new StringBuilder();
+            //cur表示本次读取到的字符,pre表示上次读取到的字符
+            char cur='a',pre='a';
             int d;
             while((d = in.read())!=-1){
-                System.out.print((char)d);
+                cur = (char)d;
+                //上次读到的是回车符本次读取到的是换行符
+                if(pre==13&cur==10){
+                    break;
+                }
+                builder.append(cur);
+                pre = cur;
             }
+            String line = builder.toString().trim();
+            System.out.println("请求行:"+line);
             //2处理请求
 
             //3发送响应
