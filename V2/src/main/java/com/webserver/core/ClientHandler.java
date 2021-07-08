@@ -22,22 +22,26 @@ public class ClientHandler implements Runnable{
     public void run() {
         try{
             //1解析请求
-            InputStream in = socket.getInputStream();
-            StringBuilder builder = new StringBuilder();
-            //cur表示本次读取到的字符,pre表示上次读取到的字符
-            char cur='a',pre='a';
-            int d;
-            while((d = in.read())!=-1){
-                cur = (char)d;
-                //上次读到的是回车符本次读取到的是换行符
-                if(pre==13&cur==10){
-                    break;
-                }
-                builder.append(cur);
-                pre = cur;
-            }
-            String line = builder.toString().trim();
+
+            //1.1解析请求行
+            String line = readLine();
             System.out.println("请求行:"+line);
+            String method;//请求方式
+            String uri;//抽象路径
+            String protocol;//协议版本
+
+            String[] data = line.split("\\s");
+            method = data[0];
+            uri = data[1];
+            protocol = data[2];
+
+            System.out.println("method:"+method);
+            System.out.println("uri:"+uri);
+            System.out.println("protocol:"+protocol);
+
+            //1.2解析消息头
+
+
             //2处理请求
 
             //3发送响应
@@ -53,4 +57,23 @@ public class ClientHandler implements Runnable{
             }
         }
     }
+
+    private String readLine() throws IOException {
+        InputStream in = socket.getInputStream();
+        StringBuilder builder = new StringBuilder();
+        //cur表示本次读取到的字符,pre表示上次读取到的字符
+        char cur='a',pre='a';
+        int d;
+        while((d = in.read())!=-1){
+            cur = (char)d;
+            //上次读到的是回车符本次读取到的是换行符
+            if(pre==13&&cur==10){
+                break;
+            }
+            builder.append(cur);
+            pre = cur;
+        }
+        return builder.toString().trim();
+    }
+
 }
