@@ -28,12 +28,30 @@
                         请求其他网站则使用绝对路径
 
             <br>标签:换行.标签后续内容都换一行显示.
+
+            <table>标签:表格.其中有两个重要的子标签
+                  <tr>标签,必须被包含在table标签中,用于表示表格中的一行
+                  <td>标签,必须被包含在<tr>标签中,用于表示一行中的一列.
+                  td标签中间定义的就是该列中要展现的内容.并且该标签有两个
+                  属性:colspan,跨列显示.  rowspan,跨行显示
+                  跨行是向下跨行.跨列是向右跨列.
+
          -->
         <center>
             <h1>百度</h1>
             <input type="text" size="32">
             <input type="button" value="百度一下"><br>
-            <a href="http://www.taobao.com">淘宝</a>
+            <a href="http://www.taobao.com">淘宝</a><br>
+            <table border="1">
+                <tr>
+                    <td rowspan="2">第一列</td>
+                    <td colspan="2">第二列</td>
+                </tr>
+                <tr>
+                    <td>第一列</td>
+                    <td>第二列</td>
+                </tr>
+            </table>
         </center>
     </body>
 </html>
