@@ -42,16 +42,16 @@ public class ClientHandler implements Runnable{
             OutputStream out = socket.getOutputStream();
             //3.1发送状态行
             String line = "HTTP/1.1 200 OK";
-            out.write(line.getBytes("UTF-8"));
+            out.write(line.getBytes("ISO8859-1"));
             out.write(13);//发送了一个回车符
             out.write(10);//发送了一个换行符
             //3.2发送响应头
             line = "Content-Type: text/html";
-            out.write(line.getBytes("UTF-8"));
+            out.write(line.getBytes("ISO8859-1"));
             out.write(13);//发送了一个回车符
             out.write(10);//发送了一个换行符
             line = "Content-Length: "+file.length();
-            out.write(line.getBytes("UTF-8"));
+            out.write(line.getBytes("ISO8859-1"));
             out.write(13);//发送了一个回车符
             out.write(10);//发送了一个换行符
             //单独发送CRLF表示响应头发送完毕
