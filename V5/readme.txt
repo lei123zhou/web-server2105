@@ -16,3 +16,8 @@ HTML:超文本标记语言,是构成一个"网页"所使用的语言.浏览器�
   在webapps下新建一个子目录,取名myweb
 3:在myweb下新建网站首页:index.html
   在myweb目录下创建文件:index.html
+
+响应index页面给浏览器
+在ClientHandler第三个环节发送响应这里,通过socket获取输出流,将一个
+标准的HTTP响应发送给浏览器,其中在响应正文中包含index.html页面数据.
+此时浏览器请求服务端后就应当能够看到上述页面了.
