@@ -3,9 +3,9 @@ package com.webserver.core;
 
 import com.webserver.http.HttpRequest;
 
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
 import java.net.Socket;
+import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -31,6 +31,42 @@ public class ClientHandler implements Runnable{
             //2处理请求
 
             //3发送响应
+            //将webapps/myweb/index.html页面响应给浏览器
+            File file = new File("./webapps/myweb/index.html");
+            /*
+                HTTP/1.1 200 OK(CRLF)
+                Content-Type: text/html(CRLF)
+                Content-Length: 2546(CRLF)(CRLF)
+                1011101010101010101......
+             */
+            OutputStream out = socket.getOutputStream();
+            //3.1发送状态行
+            String line = "HTTP/1.1 200 OK";
+            out.write(line.getBytes("UTF-8"));
+            out.write(13);//发送了一个回车符
+            out.write(10);//发送了一个换行符
+            //3.2发送响应头
+            line = "Content-Type: text/html";
+            out.write(line.getBytes("UTF-8"));
+            out.write(13);//发送了一个回车符
+            out.write(10);//发送了一个换行符
+            line = "Content-Length: "+file.length();
+            out.write(line.getBytes("UTF-8"));
+            out.write(13);//发送了一个回车符
+            out.write(10);//发送了一个换行符
+            //单独发送CRLF表示响应头发送完毕
+            out.write(13);//发送了一个回车符
+            out.write(10);//发送了一个换行符
+
+            //3.3发送响应正文
+            FileInputStream fis = new FileInputStream(file);
+
+            byte[] data = new byte[1024*10];
+            int len;
+            while((len = fis.read(data))!=-1){
+                out.write(data,0,len);
+            }
+
 
         }catch(IOException e){
             e.printStackTrace();
