@@ -116,6 +116,24 @@ public class HttpResponse {
 
     public void setEntity(File entity) {
         this.entity = entity;
+        /*
+                1:根据file获取用户请求的资源的文件名
+                2:通过文件名截取出后缀
+                3:根据后缀设置Content-Type的值,具体参照http.txt文件最后
+        */
+        Map<String,String> mimeMapping = new HashMap<>();
+        mimeMapping.put("html","text/html");
+        mimeMapping.put("css","text/css");
+        mimeMapping.put("js","application/javascript");
+        mimeMapping.put("gif","image/gif");
+        mimeMapping.put("png","image/png");
+        mimeMapping.put("jpg","image/jpeg");
+
+        String fileName = entity.getName();
+        String ext = fileName.substring(fileName.lastIndexOf(".")+1);
+        String type = mimeMapping.get(ext);
+        putHeader("Content-Type",type);
+        putHeader("Content-Length",entity.length()+"");
     }
 
     /**
