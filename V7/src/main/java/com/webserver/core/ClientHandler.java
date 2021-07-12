@@ -30,10 +30,17 @@ public class ClientHandler implements Runnable{
 
             //2处理请求
             String path = request.getUri();
-
-            //3发送响应
-            //从存放所有网络应用资源的webapps下再根据请求的抽象路径定位资源
             File file = new File("./webapps"+path);
+
+            int statusCode = 200;//状态代码(默认值为200)
+            String statusReason = "OK";//状态描述
+            if(!file.exists()||file.isDirectory()){
+                //文件不存在或者定位的是一个目录,则响应404
+                statusCode = 404;
+                statusReason = "NotFound";
+                file = new File("./webapps/root/404.html");
+            }
+            //3发送响应
             /*
                 HTTP/1.1 200 OK(CRLF)
                 Content-Type: text/html(CRLF)
@@ -42,7 +49,7 @@ public class ClientHandler implements Runnable{
              */
             OutputStream out = socket.getOutputStream();
             //3.1发送状态行
-            String line = "HTTP/1.1 200 OK";
+            String line = "HTTP/1.1"+" "+statusCode+" "+statusReason;
             out.write(line.getBytes("ISO8859-1"));
             out.write(13);//发送了一个回车符
             out.write(10);//发送了一个换行符
