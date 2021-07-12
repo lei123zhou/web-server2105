@@ -3,6 +3,7 @@ package com.webserver.core;
 
 import com.webserver.http.HttpRequest;
 import com.webserver.http.HttpResponse;
+import com.webserver.servlet.DispatcherServlet;
 
 import java.io.*;
 import java.net.Socket;
@@ -31,20 +32,9 @@ public class ClientHandler implements Runnable{
             HttpResponse response = new HttpResponse(socket);
 
             //2处理请求
-            String path = request.getUri();
-            File file = new File("./webapps"+path);
+            DispatcherServlet servlet = new DispatcherServlet();
+            servlet.service(request,response);
 
-            if(file.exists()&&file.isFile()){
-                //文件存在则直接响应
-                response.setEntity(file);
-            }else{
-                //文件不存在或者定位的是一个目录,则响应404
-                response.setStatusCode(404);
-                response.setStatusReason("NotFound");
-                response.setEntity(
-                    new File("./webapps/root/404.html")
-                );
-            }
             //3发送响应
             response.flush();
 
