@@ -15,13 +15,19 @@ public class DispatcherServlet {
         if(file.exists()&&file.isFile()){
             //文件存在则直接响应
             response.setEntity(file);
+
+            response.putHeader("Content-Type","text/html");
+            response.putHeader("Content-Length",file.length()+"");
         }else{
             //文件不存在或者定位的是一个目录,则响应404
             response.setStatusCode(404);
             response.setStatusReason("NotFound");
-            response.setEntity(
-                    new File("./webapps/root/404.html")
-            );
+            file = new File("./webapps/root/404.html");
+            response.setEntity(file);
+            response.putHeader("Content-Type","text/html");
+            response.putHeader("Content-Length",file.length()+"");
         }
+
+        response.putHeader("Server","WebServer");
     }
 }

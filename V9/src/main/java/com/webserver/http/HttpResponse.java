@@ -5,6 +5,9 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.net.Socket;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * 响应对象
@@ -15,7 +18,10 @@ public class HttpResponse {
     //状态行相关信息
     private int statusCode = 200;//状态代码(默认值为200)
     private String statusReason = "OK";//状态描述
+
     //响应头相关信息
+    //key:响应头名字  value:响应头对应的值
+    private Map<String,String> headers = new HashMap<>();
 
     //响应正文相关信息
     private File entity;//正文对应的一个实体文件
@@ -43,11 +49,26 @@ public class HttpResponse {
         println(line);
     }
     private void sendHeaders() throws IOException {
-        String line = "Content-Type: text/html";
-        println(line);
+//        String line = "Content-Type: text/html";
+//        println(line);
+//        line = "Content-Length: "+entity.length();
+//        println(line);
+        /*
+            headers:
+            key                 value
+            Content-Type        text/html
+            Content-Length      1235
+            Server              WebServer
+         */
+        Set<Map.Entry<String,String>> set = headers.entrySet();
+        for(Map.Entry<String,String> e : set){
+            String name = e.getKey();
+            String value = e.getValue();
+            String line = name +": "+value;
+            println(line);
+        }
 
-        line = "Content-Length: "+entity.length();
-        println(line);
+
 
         //单独发送CRLF表示响应头发送完毕
         println("");
@@ -95,5 +116,14 @@ public class HttpResponse {
 
     public void setEntity(File entity) {
         this.entity = entity;
+    }
+
+    /**
+     * 添加一个要发送的响应头
+     * @param name  响应头的名字
+     * @param value 响应头对应的值
+     */
+    public void putHeader(String name,String value){
+        headers.put(name,value);
     }
 }
