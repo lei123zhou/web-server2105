@@ -2,6 +2,7 @@ package com.webserver.core;
 
 
 import com.webserver.http.HttpRequest;
+import com.webserver.http.HttpResponse;
 
 import java.io.*;
 import java.net.Socket;
@@ -27,53 +28,25 @@ public class ClientHandler implements Runnable{
         try{
             //1解析请求
             HttpRequest request = new HttpRequest(socket);
+            HttpResponse response = new HttpResponse(socket);
 
             //2处理请求
             String path = request.getUri();
             File file = new File("./webapps"+path);
 
-
-            if(!file.exists()||file.isDirectory()){
+            if(file.exists()&&file.isFile()){
+                //文件存在则直接响应
+                response.setEntity(file);
+            }else{
                 //文件不存在或者定位的是一个目录,则响应404
-                statusCode = 404;
-                statusReason = "NotFound";
-                file = new File("./webapps/root/404.html");
+                response.setStatusCode(404);
+                response.setStatusReason("NotFound");
+                response.setEntity(
+                    new File("./webapps/root/404.html")
+                );
             }
             //3发送响应
-            /*
-                HTTP/1.1 200 OK(CRLF)
-                Content-Type: text/html(CRLF)
-                Content-Length: 2546(CRLF)(CRLF)
-                1011101010101010101......
-             */
-            OutputStream out = socket.getOutputStream();
-            //3.1发送状态行
-            String line = "HTTP/1.1"+" "+statusCode+" "+statusReason;
-            out.write(line.getBytes("ISO8859-1"));
-            out.write(13);//发送了一个回车符
-            out.write(10);//发送了一个换行符
-            //3.2发送响应头
-            line = "Content-Type: text/html";
-            out.write(line.getBytes("ISO8859-1"));
-            out.write(13);//发送了一个回车符
-            out.write(10);//发送了一个换行符
-            line = "Content-Length: "+file.length();
-            out.write(line.getBytes("ISO8859-1"));
-            out.write(13);//发送了一个回车符
-            out.write(10);//发送了一个换行符
-            //单独发送CRLF表示响应头发送完毕
-            out.write(13);//发送了一个回车符
-            out.write(10);//发送了一个换行符
-
-            //3.3发送响应正文
-            FileInputStream fis = new FileInputStream(file);
-
-            byte[] data = new byte[1024*10];
-            int len;
-            while((len = fis.read(data))!=-1){
-                out.write(data,0,len);
-            }
-
+            response.flush();
 
         }catch(IOException e){
             e.printStackTrace();
