@@ -20,7 +20,7 @@ public class HttpRequest {
     private String protocol;//协议版本
     private String requestURI;//抽象路径中的请求部分
     private String queryString;//抽象路径中的参数部分
-    private Map parameters = new HashMap();//保存每一组参数
+    private Map<String,String> parameters = new HashMap<>();//保存每一组参数
 
 
     //消息头相关信息
@@ -169,5 +169,17 @@ public class HttpRequest {
 
     public String getHeader(String name){
         return headers.get(name);
+    }
+
+    public String getRequestURI() {
+        return requestURI;
+    }
+
+    public String getQueryString() {
+        return queryString;
+    }
+
+    public String getParameter(String name){
+        return parameters.get(name);
     }
 }
