@@ -72,11 +72,17 @@ public class HttpRequest {
             首先按照"?"将uri拆分为两部分:请求部分和参数部分
             然后将请求部分赋值给requestURI
             参数部分赋值给queryString
-
             之后再进一步拆分出每一组参数
             将参数部分按照"&"进行拆分，每一组参数再按照"="拆分出参数名
             与参数值。并将参数名作为key，参数值作为value存入parameters
             这个Map中完成解析
+
+            例如:
+            不含有参数的uri:
+            /myweb/index.html
+
+            含有参数的uri:
+            /myweb/regUser?username=zhangsan&password=123456&nickname=asan&age=16
          */
     }
 
