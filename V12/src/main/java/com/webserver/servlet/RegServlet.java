@@ -4,6 +4,7 @@ import com.webserver.http.HttpRequest;
 import com.webserver.http.HttpResponse;
 import com.webserver.vo.User;
 
+import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
@@ -45,6 +46,12 @@ public class RegServlet {
         ){
             User user = new User(username,password,nickname,age);
             oos.writeObject(user);
+
+            //3
+            File file = new File(
+                    "./webapps/myweb/reg_success.html");
+            response.setEntity(file);
+
         }catch(IOException e){
             e.printStackTrace();
         }
