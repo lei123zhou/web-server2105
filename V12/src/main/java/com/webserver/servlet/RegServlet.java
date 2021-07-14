@@ -2,6 +2,11 @@ package com.webserver.servlet;
 
 import com.webserver.http.HttpRequest;
 import com.webserver.http.HttpResponse;
+import com.webserver.vo.User;
+
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectOutputStream;
 
 /**
  * 用于处理用户注册业务的类
@@ -24,6 +29,28 @@ public class RegServlet {
         String nickname = request.getParameter("nickname");
         String ageStr = request.getParameter("age");
         System.out.println(username+","+password+","+nickname+","+ageStr);
+
+        int age = Integer.parseInt(ageStr);
+
+        /*
+            2 将该用户以User对象形式序列化到文件中。
+              文件名格式:用户名.obj
+         */
+        try(
+                ObjectOutputStream oos = new ObjectOutputStream(
+                        new FileOutputStream(
+                                "./users/"+username+".obj"
+                        )
+                )
+        ){
+            User user = new User(username,password,nickname,age);
+            oos.writeObject(user);
+        }catch(IOException e){
+            e.printStackTrace();
+        }
+
+
+
 
 
         System.out.println("RegServlet:处理注册完毕!");
