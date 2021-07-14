@@ -36,6 +36,15 @@
                   属性:colspan,跨列显示.  rowspan,跨行显示
                   跨行是向下跨行.跨列是向右跨列.
 
+            <form>标签:表单
+                表单是用来将用户在页面上输入框中输入的信息提交给服务端
+                使用的组件。注意:只有被form标签包含的输入框内容才会被提交
+                form中有两个重要的属性:
+                    action:用于指定表单提交的路径，这个路径需要服务端配合处理
+                    method:表单提交的方式，有两种:get,post。如果不指定默认为get
+                           get:地址栏形式提交，数据会被拼接到URL中提交给服务端
+                           post:打包提交，数据会被包含在请求的消息正文中提交
+
          -->
         <center>
             <!--<h1>百度</h1>-->
@@ -55,6 +64,7 @@
             <img src="./logo.png"><br>
             <input type="text" size="32">
             <input type="button" value="百度一下"><br>
+            <a href="./reg.html">注册</a>
             <a href="http://www.taobao.com">淘宝</a>
             <a href="./classTable.html">课程表</a><br>
             <table border="1">

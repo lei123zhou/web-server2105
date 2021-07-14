@@ -18,6 +18,10 @@ public class HttpRequest {
     private String method;//请求方式
     private String uri;//抽象路径
     private String protocol;//协议版本
+    private String requestURI;//抽象路径中的请求部分
+    private String queryString;//抽象路径中的参数部分
+    private Map parameters = new HashMap();//保存每一组参数
+
 
     //消息头相关信息
     //存放所有消息头的Map,key:消息头的名字 value:消息头的值
@@ -50,9 +54,30 @@ public class HttpRequest {
         method = data[0];
         uri = data[1];
         protocol = data[2];
+        parseUri();//进一步解析uri
         System.out.println("method:"+method);
         System.out.println("uri:"+uri);
         System.out.println("protocol:"+protocol);
+    }
+
+    /**
+     * 进一步解析uri
+     */
+    private void parseUri(){
+        /*
+            uri分为两种情况:含有参数和不含有参数
+            如果uri不含有参数，则直接将uri的值赋值给requestURI即可
+
+            如果uri中含有参数，则需要进一步拆分解析:
+            首先按照"?"将uri拆分为两部分:请求部分和参数部分
+            然后将请求部分赋值给requestURI
+            参数部分赋值给queryString
+
+            之后再进一步拆分出每一组参数
+            将参数部分按照"&"进行拆分，每一组参数再按照"="拆分出参数名
+            与参数值。并将参数名作为key，参数值作为value存入parameters
+            这个Map中完成解析
+         */
     }
 
     /**

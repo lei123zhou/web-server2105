@@ -7,29 +7,55 @@
 <body>
     <center>
         <h1>用户注册</h1>
-        <table border="1">
-            <tr>
-                <td>用户名</td>
-                <td><input type="text"></td>
-            </tr>
-            <tr>
-                <td>密码</td>
-                <td><input type="password"></td>
-            </tr>
-            <tr>
-                <td>昵称</td>
-                <td><input type="text"></td>
-            </tr>
-            <tr>
-                <td>年龄</td>
-                <td><input type="text"></td>
-            </tr>
-            <tr>
-                <td align="center" colspan="2">
-                    <input type="button" value="注册">
-                </td>
-            </tr>
-        </table>
+        <!--
+            action决定表单提交的位置:./regUser浏览器理解的位置为:
+            http://localhost:8088/myweb/regUser
+
+            浏览器在理解"./regUser"中的"当前目录./"是基于请求当前
+            注册页面reg.html的路径:
+            http://localhost:8088/myweb/reg.html
+            因此，"./"为:
+            http://localhost:8088/myweb/
+            所以，表单action提交的实际路径为:
+            http://localhost:8088/myweb/regUser
+
+            表单中所有的输入框都需要使用name属性指定名字，否则在提交的时候会
+            被忽略。
+            当表单以get形式提交是，浏览器地址栏中URL的格式如下:
+            http://localhost:8088/myweb/regUser?username=zhangsan&password=123456&nickname=asan&age=16
+            该URL使用"?"将地址分为了请求部分和参数部分。
+            其中请求部分具体是什么由表单action决定，上面已经阐述过。
+            参数部分的格式为:name1=value1&name2=value2&...
+            首先每组参数由"&"分割，具体有几个参数取决于form中有多少个输入框。
+            每一组参数又由"="分割为参数名和参数值:
+            参数名:就是输入框中name属性指定的值
+            参数值:该输入框中用户输入的信息
+        -->
+        <form action="./regUser" method="get">
+            <table border="1">
+                <tr>
+                    <td>用户名</td>
+                    <td><input name="username" type="text"></td>
+                </tr>
+                <tr>
+                    <td>密码</td>
+                    <td><input name="password" type="password"></td>
+                </tr>
+                <tr>
+                    <td>昵称</td>
+                    <td><input name="nickname" type="text"></td>
+                </tr>
+                <tr>
+                    <td>年龄</td>
+                    <td><input name="age" type="text"></td>
+                </tr>
+                <tr>
+                    <td align="center" colspan="2">
+                        <input type="submit" value="注册">
+                    </td>
+                </tr>
+            </table>
+        </form>
     </center>
 </body>
 </html>
