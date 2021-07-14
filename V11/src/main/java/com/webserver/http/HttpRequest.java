@@ -84,6 +84,31 @@ public class HttpRequest {
             含有参数的uri:
             /myweb/regUser?username=zhangsan&password=123456&nickname=asan&age=16
          */
+        if(uri.contains("?")){
+            //有参数
+            String[] data = uri.split("\\?");
+            requestURI = data[0];
+            if(data.length>1) {
+                queryString = data[1];
+                //拆分出每一组参数
+                data = queryString.split("&");
+                //遍历每一组参数，再拆分出参数名和参数值
+                for(String para : data){
+                    String[] paras = para.split("=");
+                    if(paras.length>1) {//有参数名也有参数值,比如:password=123
+                        parameters.put(paras[0], paras[1]);
+                    }else{//只有参数名，没有参数值。比如:password=
+                        parameters.put(paras[0], null);
+                    }
+                }
+            }
+        }else{
+            //没有参数
+            requestURI = uri;
+        }
+        System.out.println("requestURI:"+requestURI);
+        System.out.println("queryString:"+queryString);
+        System.out.println("parameters:"+parameters);
     }
 
     /**
