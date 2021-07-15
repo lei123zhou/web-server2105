@@ -30,9 +30,24 @@ public class RegServlet {
         String nickname = request.getParameter("nickname");
         String ageStr = request.getParameter("age");
         System.out.println(username+","+password+","+nickname+","+ageStr);
+        /*
+            首先要验证用户输入的注册信息。
+            要求如下:
+            四项内容都必须写，不能有null的情况。
+            并且年龄必须是一个整数格式（正则表达式验证）
+
+            否则直接响应注册失败提示页面:reg_info_error.html
+            该页面剧中显示一行字:注册失败，注册信息有误!请重新注册。
+         */
+        if(username==null||password==null||nickname==null||
+            ageStr==null||!ageStr.matches("[0-9]+")){
+            File file = new File("./webapps/myweb/reg_info_error.html");
+            response.setEntity(file);
+            return;
+        }
+
 
         int age = Integer.parseInt(ageStr);
-
         /*
             2 将该用户以User对象形式序列化到文件中。
               文件名格式:用户名.obj
