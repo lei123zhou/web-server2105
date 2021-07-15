@@ -95,22 +95,7 @@ public class HttpRequest {
             requestURI = data[0];
             if(data.length>1) {
                 queryString = data[1];
-                //拆分出每一组参数
-                data = queryString.split("&");
-                //遍历每一组参数，再拆分出参数名和参数值
-                for(String para : data){
-                    String[] paras = para.split("=");
-                    if(paras.length>1) {//有参数名也有参数值,比如:password=123
-                        try {
-                            paras[1] = URLDecoder.decode(paras[1],"UTF-8");
-                        } catch (UnsupportedEncodingException e) {
-                            e.printStackTrace();
-                        }
-                        parameters.put(paras[0], paras[1]);
-                    }else{//只有参数名，没有参数值。比如:password=
-                        parameters.put(paras[0], null);
-                    }
-                }
+                parseParameters(queryString);
             }
         }else{
             //没有参数
@@ -119,6 +104,29 @@ public class HttpRequest {
         System.out.println("requestURI:"+requestURI);
         System.out.println("queryString:"+queryString);
         System.out.println("parameters:"+parameters);
+    }
+
+    /**
+     * 解析参数
+     * @param line
+     */
+    private void parseParameters(String line){
+        //拆分出每一组参数
+        String[] data = line.split("&");
+        //遍历每一组参数，再拆分出参数名和参数值
+        for(String para : data){
+            String[] paras = para.split("=");
+            if(paras.length>1) {//有参数名也有参数值,比如:password=123
+                try {
+                    paras[1] = URLDecoder.decode(paras[1],"UTF-8");
+                } catch (UnsupportedEncodingException e) {
+                    e.printStackTrace();
+                }
+                parameters.put(paras[0], paras[1]);
+            }else{//只有参数名，没有参数值。比如:password=
+                parameters.put(paras[0], null);
+            }
+        }
     }
 
     /**
@@ -158,6 +166,7 @@ public class HttpRequest {
                     //判定该正文就是一个字符串，原GET请求提交是URL中"?"右侧内容
                     String line = new String(data,"ISO8859-1");
                     System.out.println("正文内容:"+line);
+                    parseParameters(line);
                 }
 
             }
