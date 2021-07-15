@@ -3,7 +3,9 @@ import static com.webserver.http.HttpContext.CR;
 import static com.webserver.http.HttpContext.LF;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.UnsupportedEncodingException;
 import java.net.Socket;
+import java.net.URLDecoder;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -99,6 +101,11 @@ public class HttpRequest {
                 for(String para : data){
                     String[] paras = para.split("=");
                     if(paras.length>1) {//有参数名也有参数值,比如:password=123
+                        try {
+                            paras[1] = URLDecoder.decode(paras[1],"UTF-8");
+                        } catch (UnsupportedEncodingException e) {
+                            e.printStackTrace();
+                        }
                         parameters.put(paras[0], paras[1]);
                     }else{//只有参数名，没有参数值。比如:password=
                         parameters.put(paras[0], null);
