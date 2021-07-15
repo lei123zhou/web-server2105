@@ -45,17 +45,25 @@ public class RegServlet {
             response.setEntity(file);
             return;
         }
-
-
         int age = Integer.parseInt(ageStr);
         /*
             2 将该用户以User对象形式序列化到文件中。
               文件名格式:用户名.obj
          */
+        /*
+            重复用户的验证，如果是重复用户则直接响应重复用户的提示页面:
+            have_user.html.中显示一行字:该用户已存在，请重新注册。
+         */
+        File userFile = new File("./users/"+username+".obj");
+        if(userFile.exists()){//如果文件存在说明是重复用户
+            response.setEntity(new File("./webapps/myweb/have_user.html"));
+            return;
+        }
+
         try(
                 ObjectOutputStream oos = new ObjectOutputStream(
                         new FileOutputStream(
-                                "./users/"+username+".obj"
+                                userFile
                         )
                 )
         ){
