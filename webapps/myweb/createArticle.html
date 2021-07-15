@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>发表文章</title>
+</head>
+<body>
+<center>
+    <h1>发表文章</h1>
+    <!--<form action="./regUser" method="get">-->
+    <form action="./createArticle" method="post">
+        <table border="1">
+            <tr>
+                <td>标题</td>
+                <td><input name="title" type="text"></td>
+            </tr>
+            <tr>
+                <td>作者</td>
+                <td><input name="author" type="text"></td>
+            </tr>
+            <tr>
+                <td colspan="2">
+                    <textarea name="content"></textarea>
+                </td>
+            </tr>
+            <tr>
+                <td align="center" colspan="2">
+                    <input type="submit" value="注册">
+                </td>
+            </tr>
+        </table>
+    </form>
+</center>
+</body>
+</html>
