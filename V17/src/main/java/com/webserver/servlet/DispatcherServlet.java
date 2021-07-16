@@ -20,6 +20,9 @@ public class DispatcherServlet {
         }else if("/myweb/loginUser".equals(path)){
             LoginServlet servlet = new LoginServlet();
             servlet.service(request,response);
+        }else if("/myweb/createArticle".equals(path)){
+            CreateArticleServlet servlet = new CreateArticleServlet();
+            servlet.service(request,response);
         }else {
             File file = new File("./webapps" + path);
             if (file.exists() && file.isFile()) {
