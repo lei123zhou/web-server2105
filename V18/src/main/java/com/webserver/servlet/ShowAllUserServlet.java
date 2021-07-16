@@ -56,15 +56,28 @@ public class ShowAllUserServlet {
            pw.println("<table border=\"1\">");
            pw.println("<tr>");
            pw.println("<td>用户名</td>");
-           pw.println("<td>用户名</td>");
-           pw.println("<td>用户名</td>");
-           pw.println("<td>用户名</td>");
+           pw.println("<td>密码</td>");
+           pw.println("<td>昵称</td>");
+           pw.println("<td>年龄</td>");
            pw.println("</tr>");
+           for(User user : userList){
+               pw.println("<tr>");
+               pw.println("<td>"+user.getUsername()+"</td>");
+               pw.println("<td>"+user.getPassword()+"</td>");
+               pw.println("<td>"+user.getNickname()+"</td>");
+               pw.println("<td>"+user.getAge()+"</td>");
+               pw.println("</tr>");
+           }
+
            pw.println("</table>");
            pw.println("</center>");
            pw.println("</body>");
            pw.println("</html>");
            pw.flush();
+
+           response.setEntity(
+              new File("userList.html")
+           );
         }catch(Exception e){
             e.printStackTrace();
         }
