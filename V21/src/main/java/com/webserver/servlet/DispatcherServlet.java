@@ -1,5 +1,8 @@
 package com.webserver.servlet;
 
+import com.webserver.controller.ArticleController;
+import com.webserver.controller.ToolsController;
+import com.webserver.controller.UserController;
 import com.webserver.http.HttpRequest;
 import com.webserver.http.HttpResponse;
 
@@ -15,23 +18,23 @@ public class DispatcherServlet {
         String path = request.getRequestURI();
         //首先通过请求判定是否为请求一个业务
         if("/myweb/regUser".equals(path)){
-            RegServlet servlet = new RegServlet();
-            servlet.service(request,response);
+            UserController controller = new UserController();
+            controller.reg(request,response);
         }else if("/myweb/loginUser".equals(path)){
-            LoginServlet servlet = new LoginServlet();
-            servlet.service(request,response);
+            UserController controller = new UserController();
+            controller.login(request,response);
         }else if("/myweb/createArticle".equals(path)){
-            CreateArticleServlet servlet = new CreateArticleServlet();
-            servlet.service(request,response);
+            ArticleController controller = new ArticleController();
+            controller.create(request,response);
         }else if("/myweb/showAllUser".equals(path)){
-            ShowAllUserServlet servlet = new ShowAllUserServlet();
-            servlet.service(request,response);
+            UserController controller = new UserController();
+            controller.showAllUser(request,response);
         }else if("/myweb/showAllArticle".equals(path)){
-            ShowAllArticleServlet servlet = new ShowAllArticleServlet();
-            servlet.service(request,response);
+            ArticleController controller = new ArticleController();
+            controller.showAllArticle(request,response);
         }else if("/myweb/createQR".equals(path)){
-            CreateQRServlet servlet = new CreateQRServlet();
-            servlet.service(request,response);
+            ToolsController controller = new ToolsController();
+            controller.createQR(request,response);
         }else {
             File file = new File("./webapps" + path);
             if (file.exists() && file.isFile()) {
