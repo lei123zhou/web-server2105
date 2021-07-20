@@ -7,6 +7,7 @@ import com.webserver.http.HttpResponse;
 import com.webserver.servlet.DispatcherServlet;
 
 import java.io.*;
+import java.lang.reflect.InvocationTargetException;
 import java.net.Socket;
 import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
@@ -43,6 +44,10 @@ public class ClientHandler implements Runnable{
             e.printStackTrace();
         } catch (EmptyRequestException e) {
            //空请求异常捕获后什么都不用做
+        } catch (InvocationTargetException e) {
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
         } finally {
             try {
                 //交互完毕后与客户端断开连接(HTTP协议要求)

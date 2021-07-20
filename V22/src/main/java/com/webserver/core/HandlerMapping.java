@@ -72,20 +72,25 @@ public class HandlerMapping {
                 }
             }
 
-            mapping.forEach(
-                    (k,v)-> System.out.println(
-                        "请求路径:"+k+",对应的处理类实例:"+
-                        v.getObj()+",方法:"+v.getMethod().getName()
-                    )
-            );
+//            mapping.forEach(
+//                    (k,v)-> System.out.println(
+//                        "请求路径:"+k+",对应的处理类实例:"+
+//                        v.getObj()+",方法:"+v.getMethod().getName()
+//                    )
+//            );
 
         }catch(Exception e){
             e.printStackTrace();
         }
     }
 
-    public static void main(String[] args) {
-
+    /**
+     * 根据给定的请求路径获取处理该路径的Controller以及对应方法
+     * @param path
+     * @return
+     */
+    public static MethodMapping getMethod(String path){
+        return mapping.get(path);
     }
 
 
