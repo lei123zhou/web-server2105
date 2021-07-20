@@ -1,5 +1,8 @@
 package com.webserver.core;
 
+import com.webserver.core.annotation.Controller;
+import com.webserver.core.annotation.RequestMapping;
+
 import java.io.File;
 import java.lang.reflect.Method;
 import java.util.HashMap;
@@ -43,8 +46,38 @@ public class HandlerMapping {
                 //加载类对象
                 Class cls = Class.forName("com.webserver.controller."+className);
 
-                System.out.println(cls.getName());
+                //2筛选所有被@Controller修饰的类
+                if(cls.isAnnotationPresent(Controller.class)){
+                    //实例化这个Controller备用
+                    Object controller = cls.newInstance();
+
+                    //3筛选该Controller中被@RequestMapping修饰的方法
+                    Method[] methods = cls.getDeclaredMethods();
+                    for(Method method : methods){
+                        if(method.isAnnotationPresent(RequestMapping.class)){
+                            //通过@RequestMapping注解获取该方法对应的请求
+                            RequestMapping rm = method.getAnnotation(RequestMapping.class);
+                            String path = rm.value();
+                            //将业务方法和该方法所属对象构建成一个MethodMapping对象
+                            MethodMapping methodMapping = new MethodMapping();
+                            methodMapping.setMethod(method);
+                            methodMapping.setObj(controller);
+                            /*
+                            将请求路径与处理该请求的业务类实例(某Controller实例)和对应方法
+                            存入mapping中.
+                             */
+                            mapping.put(path,methodMapping);
+                        }
+                    }
+                }
             }
+
+            mapping.forEach(
+                    (k,v)-> System.out.println(
+                        "请求路径:"+k+",对应的处理类实例:"+
+                        v.getObj()+",方法:"+v.getMethod().getName()
+                    )
+            );
 
         }catch(Exception e){
             e.printStackTrace();
